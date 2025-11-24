@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dua Educational Portal — Complete (Payments Added)</title>
+<style>
+:root{
+  --bg: linear-gradient(135deg,#a5f3fc,#06434b);
+  --card:#f7f8f9;
+  --accent:#0587d7;
+  --accent2:#3605e7;
+  --accent3:#f5f4f67e;
+  --muted:#1368df35;
+  --radius:10px;
+  --max:Auto;
+  --shadow: 0 8px 20px rgba(2, 69, 227, 0.08);
+  font-family: Inter, system-ui, Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:#011a2a}
+.wrap{max-width:1200px;margin:10px auto;padding:12px}
+header{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:8px;border-radius:6px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:15px}
+.brand img{width:36px;height:36px;border-radius:8px;object-fit:cover}
+.brand h1{font-size:18px;margin:0;color:#fff}
+nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+nav a{color:#f5f5f3;text-decoration:none;padding:6px 8px;border-radius:8px;cursor:pointer;font-weight:600}
+.layout{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:12px}
+.card{background:var(--card);padding:18px;border-radius:10px;box-shadow:var(--shadow)}
+h2{margin:0 0 10px 0;color:var(--accent)}
+label{display:block;font-weight:500;margin-bottom:6px;color:#334155}
+input,select,textarea,button{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(6,40,61,0.06);margin-bottom:10px;font-size:14px}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);border-color:rgba(79,70,229,0.2)}
+.btn-row{display:flex;gap:8px}
+.btn{cursor:pointer;border:none;padding:10px 12px;border-radius:8px;font-weight:700}
+.btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+.btn-ghost{background:transparent;border:2px solid var(--accent);color:var(--accent)}
+.small{font-size:11px;color:#64748b}
+.result-row{padding:10px;border-radius:8px;background:#f8fafc;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.table{width:100%;border-collapse:collapse;margin-top:12px}
+.table th,.table td{border:1px solid #e6eef6;padding:8px;background:white;text-align:left}
+.table th{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+.hidden{display:none}
+.stu-photo{width:96px;height:96px;border-radius:8px;object-fit:cover;border:2px solid rgba(0,0,0,0.04)}
+.confirm-box{display:flex;gap:12px;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(180deg,#ecfeff,#f0f9ff);border:1px solid rgba(6,40,61,0.04)}
+@media (max-width:980px){.layout{grid-template-columns:1fr}}
+
+/* small ui tweaks */
+.admin-img { width:60px;height:60px;border-radius:6px;object-fit:cover;border:1px solid #ddd }
+
+/* toast */
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #0f766e;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(215, 36, 36, 0.12);
+  z-index: 9999;
+}
+.teachers-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+/* teacher card */
+.teacher-card{
+  width: calc((100% - 40px) / 3); /* 3 cards per row with 20px gap */
+  max-width: 200px; /* ensure card not too wide on small screens */
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.teacher-card:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.teacher-card img{
+  width: 160px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%; /* circle shape */
+  display: block;
+  margin:  auto auto auto; /* center horizontally with bottom margin */
+}
+
+.teacher-name{
+  font-weight: bold;
+  font-size: 3rem;
+  color: var(--accent);
+}
+
+.teacher-subject{
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* fallback small gallery for extra images */
+.teacher-gallery{ display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px }
+.teacher-gallery img{ width:220PX;height:210PX;object-fit:cover;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.06) }
+
+@media (max-width:640px){
+  .teacher-card{ width: calc(50% - 10px); max-width: 45vw; }
+  .teacher-card img{ width:120px;height:120px; }
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <!-- using the uploaded image path as logo (local file) -->
+      <img id="siteLogo" src="logo dua Academy kamoon shaheed.PNG" alt="Logo" onerror="this.style.display='none'">
+      <div>
+        <h1>Dua Educational Academy</h1>
+        <div class="small" style="color:rgba(255,255,255,0.9)">Online Admission Portal</div>
+      </div>
+    </div>
+    <nav>
+      <a onclick="openSection('home')">Home</a>
+      <a onclick="openSection('apply')">Apply</a>
+      <a onclick="openSection('slip')">Slip</a>
+      <a onclick="openSection('result')">Result</a>
+      <a onclick="openSection('admin')">Admin</a>
+      <a onclick="openSection('marksUpload')">Marks</a>
+      <button class="btn btn-primary" onclick="openSection('apply')" style="width:auto;">Apply Now</button>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section id="home" class="card home-card">
+      <h2 style="font-size:22px; text-align:center; margin-bottom:10px;">Welcome to Dua Educational Academy</h2>
+      <p class="home-desc" style="text-align:center; font-size:14px;">Official Online Portal — Auto Roll • Apply • Slip • Result • Admin</p>
+
+      <div style="text-align:center; padding:10px;">
+        <img src="logo dua Academy kamoon shaheed.PNG" width="140" height="140" style="border-radius:10px;" alt="Academy Logo" onerror="this.style.display='none'">
+      </div>
+
+      <div style="display:flex; justify-content:center; gap:8px; margin-top:8px;">
+        <button class="btn btn-primary" onclick="openSection('apply')" style="width:auto;">Apply</button>
+        <button class="btn btn-primary" onclick="openSection('slip')" style="width:auto;">Slip</button>
+        <button class="btn btn-primary" onclick="openSection('result')" style="width:auto;">Result</button>
+        <button class="btn btn-primary" onclick="openSection('admin')" style="width:auto;">Admin</button>
+      </div>
+
+      <h3 style="text-align:center; margin-top:20px; color:var(--accent);">Feculaty Dua Academy </h3>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:10px">
+        <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
+          <img src="p.jpg" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
+          <div style="font-weight:800;color:var(--accent);margin-top:6px">Director Noor Muhammad Musafir Soomro</div>
+          <div class="small"></div>
+        </div>
+        <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
+          <img src="Sir gada hussain.jpg" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
+          <div style="font-weight:800;color:var(--accent);margin-top:6px">Pattern Gada Hussain Soomro</div>
+          <div class="small">📞 0308-3442741</div>
+        </div>
+        <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
+          <img src="sir Ahmed.jpg" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
+          <div style="font-weight:800;color:var(--accent);margin-top:6px">Teacher Ahmed Ali Chachar</div>
+          <div class="small">📞 0300-2627384</div>
+        </div>
+      <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
+          <img src="ubedulla khan.PNG" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
+          <div style="font-weight:800;color:var(--accent);margin-top:6px">Mr. Ubedullah khan </div>
+          <div class="small">Web Developnment </div>
+        </div>
+
+        
+        <div class="teacher-gallery" aria-hidden="false">
+          <img src="sir gada.PNG" alt="Sir Gada" onerror="this.style.display='none'">
+          <img src="p6.jpg" alt="Ahmed" onerror="this.style.display='none'">
+          <img src="p5.jpg" alt="Ubedullah Khan" onerror="this.style.display='none'">
+          <img src="p4.jpg" alt="Sir Niaz" onerror="this.style.display='none'">
+          <img src="p2.jpg" alt="Miss Zohara" onerror="this.style.display='none'">
+          <img src="p1.jpg" alt="Miss Hajara" onerror="this.style.display='none'">
+          <img src="p13.jpg" alt="Sir Niaz" onerror="this.style.display='none'">
+          <img src="p14.jpg" alt="Miss Zohara" onerror="this.style.display='none'">
+          <img src="p15.jpg" alt="Miss Hajara" onerror="this.style.display='none'">
+        </div>
+
+        <div class="teacher-gallery" aria-hidden="false">
+          <img src="p7.jpg" alt="Sir Gada" onerror="this.style.display='none'">
+          <img src="p8.jpg" alt="Ahmed" onerror="this.style.display='none'">
+          <img src="p10.jpg" alt="Ubedullah Khan" onerror="this.style.display='none'">
+          <img src="p12.jpg" alt="Sir Niaz" onerror="this.style.display='none'">
+          <img src="p11.jpg" alt="Miss Zohara" onerror="this.style.display='none'">
+          <img src="p9.jpg" alt="Miss Hajara" onerror="this.style.display='none'">
+        
+
+          <div class="teacher-card" aria-hidden="false">
+            <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">          
+            <img src="ahmad card (4).PNG" alt="">
+             <img src="ahmad card (1).PNG" alt="">
+              <img src="ahmad card (2).PNG" alt="">
+               <img src="ahmad card (3).PNG" alt="">
+            </div>
+          
+          
+          ></div>
+    </section>
+
+    <!-- Apply -->
+    <section id="apply" class="card hidden">
+      <div style="padding:6px;background:#f5f7f8;border-radius:10px;text-align:center">
+        <h3>Dua Educational Academy Kamoon Shaheed</h3>
+        <h2>Online Apply Form</h2>
+
+        <form id="applyForm" autocomplete="off">
+          <h4 class="small" style="color:var(--accent)">Student Information</h4>
+          <label> Name <input id="stu_name" required /></label>
+          <label> Surname <input id="stu_surname" required /></label>
+
+          <label> Gender
+            <select id="stu_gender" required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+
+          <label> Date of Birth <input id="stu_dob" type="date" required /></label>
+          <label> CNIC (13 digits) <input id="stu_cnic" maxlength="13" inputmode="numeric" pattern="[0-9]*" required /></label>
+
+          <label> Class
+            <select id="stu_class" required onchange="calcAppFee()">
+              <option value="">Select Class</option>
+              <option value="5">5</option><option value="6">6</option><option value="7">7</option>
+              <option value="8">8</option><option value="9">9</option><option value="10">10</option>
+              <option value="11-Medical">11 - Medical</option><option value="11-Eng">11 - Eng</option>
+              <option value="12-Medical">12 - Medical</option><option value="12-Eng">12 - Eng</option>
+            </select>
+          </label>
+
+          <label> Past School Name <input id="stu_pastSchool" /></label>
+          <label> WhatsApp Number (11 digits) <input id="stu_whatsapp" maxlength="11" inputmode="numeric" pattern="[0-9]*" /></label>
+          <label> Upload Photo (optional) <input id="stu_photo" type="file" accept="image/*" /></label>
+
+          <h4 class="small" style="color:var(--accent)">Father Information</h4>
+          <label> Father Name <input id="father_name" required /></label>
+          <label> Father Surname <input id="father_surname" required /></label>
+          <label> Father CNIC (13 digits) <input id="father_cnic" maxlength="13" inputmode="numeric" pattern="[0-9]*" required /></label>
+          <label> Occupation <input id="father_occupation" /></label>
+
+          <!-- NEW: Fee & Payment Screenshot -->
+          <h4 class="small" style="color:var(--accent)">Payment</h4>
+          <label> Application Fee (auto) <input id="app_fee" readonly /></label>
+          <label> Upload Payment Screenshot (required) <input id="fee_screenshot" type="file" accept="image/*" required /></label>
+
+          <!-- NEW: Payment Sent From Number -->
+          <label> Payment Sent From Number (03XXXXXXXXX) <input id="payment_sender_number" maxlength="11" inputmode="numeric" placeholder="03XXXXXXXXX" required /></label>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" type="submit">Submit Application & Pay</button>
+            <button type="button" class="btn btn-ghost" onclick="applyFormReset()">Reset</button>
+          </div>
+        </form>
+
+        <div id="applyConfirm" class="hidden" style="margin-top:14px"></div>
+
+        <h4 style="margin-top:14px">Saved Applications</h4>
+        <div id="appsList" class="small">No applications yet.</div>
+      </div>
+
+      
+    </section>
+
+    <!-- Slip -->
+    <section id="slip" class="card hidden">
+      <div style="padding:12px;background:#f0f9ff;border-radius:10px;text-align:center">
+        <img src="logo dua Academy kamoon shaheed.PNG" class="stu-photo" alt="Logo" onerror="this.style.display='none'">
+        <h2>Admit Slip</h2>
+        <label> Enter Roll Number <input id="slip_roll" /></label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="genSlipBtn">Generate Slip</button>
+          <button class="btn btn-ghost" id="printSlipBtn">Print / Save PDF</button>
+        </div>
+        <div id="slipArea" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="result" class="card hidden">
+      <div style="padding:8px;background:#f6f7f8;border-radius:6px;text-align:center">
+        <img src="logo dua Academy kamoon shaheed.PNG" width="200" height="180" alt="Logo" onerror="this.style.display='none'">
+        <h2>Result</h2>
+        <label> Enter Roll Number <input id="res_roll" /></label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" id="checkResBtn">Check Result</button>
+          <button class="btn btn-ghost" id="printResultBtn">Print / Save PDF</button>
+        </div>
+        <div id="resultArea" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- Admin -->
+    <section id="admin" class="card hidden">
+      <div style="padding:12px;background:#f0f9ff;border-radius:10px;text-align:center">
+        <img src="logo dua Academy kamoon shaheed.PNG" width="200" height="200" alt="Logo" onerror="this.style.display='none'">
+        <h2>Admin Panel</h2>
+
+        <form id="adminLoginForm">
+          <label> Password <input id="adminPass" type="password" required /></label>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Login</button></div>
+        </form>
+
+        <div id="adminArea" class="hidden" style="margin-top:12px">
+          <h4>Applications & Marks (editable)</h4>
+          <table class="table" id="adminTable">
+            <thead>
+              <tr>
+                <th>Roll</th><th>Photo</th><th>Name</th><th>Surname</th><th>Gender</th><th>DOB</th><th>CNIC</th>
+                <th>Class</th><th>Past School</th><th>WhatsApp</th><th>Father Name</th><th>Father Surname</th>
+                <th>Father CNIC</th><th>Father Occupation</th><th>Fee</th><th>Payment From</th><th>Payment</th><th>Marks</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marks Upload -->
+    <section id="marksUpload" class="card hidden">
+      <div style="padding:12px;background:#f0f9ff;border-radius:10px;text-align:center">
+        <img src="logo dua Academy kamoon shaheed.PNG" width="200" height="200" alt="Logo" onerror="this.style.display='none'">
+        <h2>Upload Marks (Single entry test)</h2>
+        <form id="marksForm">
+          <label>Password <input id="marksPass" type="password" required /></label>
+          <div style="display:flex;gap:8px"><button class="btn btn-primary" type="submit">Open</button></div>
+        </form>
+
+        <div id="marksArea" class="hidden" style="margin-top:12px">
+          <label> Roll Number <input id="marks_roll" /></label>
+          <label> Marks (0-100) <input id="marks_value" type="number" min="0" max="100" /></label>
+          <div style="display:flex;gap:8px"><button id="saveMarksBtn" class="btn btn-primary">Upload Marks</button>
+          <button class="btn btn-ghost" onclick="openSection('admin')">Go to Admin</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center;margin-top:18px" class="small">© Dua Educational — Demo portal</footer>
+</div>
+
+<!-- simple toast helper -->
+<div id="toast" class="toast hidden" style="display:none"></div>
+
+<script>
+/* ---------- Helpers & Storage ---------- */
+const ADMIN_PASSWORD = 'uk6091';
+const ACADEMY_NAME = 'Dua Educational Academy';
+
+function q(id){ return document.getElementById(id); }
+function readApps(){ return JSON.parse(localStorage.getItem('apps')||'[]'); }
+function readMarks(){ return JSON.parse(localStorage.getItem('marks')||'[]'); }
+function saveApps(arr){ localStorage.setItem('apps', JSON.stringify(arr)); }
+function saveMarks(arr){ localStorage.setItem('marks', JSON.stringify(arr)); }
+
+/* toast */
+function showToast(msg, time=3500){
+  const t = q('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=> t.style.display='none', time);
+}
+
+/* ---------- UI control ---------- */
+const sections = ['home','apply','slip','result','admin','marksUpload'];
+function openSection(id){
+  sections.forEach(s => document.getElementById(s).classList.toggle('hidden', s!==id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+window.openSection = openSection;
+openSection('home');
+
+/* ---------- Roll number generator (pattern ACD-YYYY-XXXXX) ---------- */
+function getNextRoll(){
+  let seq = localStorage.getItem('next_roll_seq');
+  if(!seq){ seq = 1; }
+  localStorage.setItem('next_roll_seq', String(Number(seq)+1));
+  const year = new Date().getFullYear();
+  const padded = String(seq).padStart(5,'0');
+  return `ACD-${year}-${padded}`;
+}
+
+/* ---------- Fees auto-calc ---------- */
+function calcAppFee(){
+  const cls = q('stu_class').value || '';
+  if(cls.startsWith('11') || cls.startsWith('12')) q('app_fee').value = 700;
+  else q('app_fee').value = 500;
+}
+window.calcAppFee = calcAppFee;
+calcAppFee();
+
+/* ---------- Render saved applications list (simple) ---------- */
+function renderAppsList(){
+  const apps = readApps();
+  const el = q('appsList');
+  if(!apps.length){ el.textContent='No applications yet.'; return; }
+  el.innerHTML = '';
+  apps.slice().reverse().forEach(a=>{
+    const d = document.createElement('div');
+    d.className = 'result-row';
+    d.innerHTML = `<div style="display:flex;gap:10px;align-items:center">
+                    <img src="${a.photo||a.feeImage||''}" onerror="this.style.display='none'" style="width:48px;height:48px;border-radius:6px;object-fit:cover"/>
+                    <div><strong>${a.name} ${a.surname}</strong><div class="small">Roll: ${a.roll} • ${a.class} • Fee: ${a.appFee}</div></div>
+                   </div>
+                   <div style="display:flex;flex-direction:column;gap:6px">
+                     <button class="btn btn-ghost" onclick="quickView('${a.roll}')">View Slip</button>
+                     <div class="small">Payment: <strong>${a.paymentStatus}</strong></div>
+                   </div>`;
+    el.appendChild(d);
+  });
+}
+
+/* quick view -> jump to slip with roll */
+function quickView(roll){
+  q('slip_roll').value = roll;
+  openSection('slip');
+  genSlip();
+}
+
+/* ---------- Apply form ---------- */
+const applyForm = q('applyForm');
+const applyConfirm = q('applyConfirm');
+
+function applyFormReset(){
+  applyForm.reset();
+  calcAppFee();
+  applyConfirm.classList.add('hidden');
+  applyConfirm.innerHTML = '';
+}
+
+applyForm.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  // validations
+  const cnic = q('stu_cnic').value.trim();
+  if(cnic && cnic.length !== 13){ alert('Student CNIC must be 13 digits'); return; }
+  const fcnic = q('father_cnic').value.trim();
+  if(fcnic && fcnic.length !== 13){ alert('Father CNIC must be 13 digits'); return; }
+  const wa = q('stu_whatsapp').value.trim();
+  if(wa && wa.length!==11){ alert('WhatsApp number must be 11 digits (or leave empty)'); return; }
+
+  const paymentSender = q('payment_sender_number').value.trim();
+  if(!/^03[0-9]{9}$/.test(paymentSender)){ alert('Payment sender number must be in 03XXXXXXXXX format'); return; }
+
+  const filePhoto = q('stu_photo');
+  const fileFee = q('fee_screenshot');
+
+  if(!fileFee.files || fileFee.files.length===0){
+    alert('Please upload payment screenshot to proceed.');
+    return;
+  }
+
+  const roll = getNextRoll();
+
+  // read photo (optional) and fee screenshot (required)
+  const readerFee = new FileReader();
+  readerFee.onload = function(){
+    const feeData = readerFee.result;
+
+    if(filePhoto.files && filePhoto.files.length>0){
+      const readerPhoto = new FileReader();
+      readerPhoto.onload = function(){
+        saveApplication(roll, feeData, readerPhoto.result);
+      };
+      readerPhoto.readAsDataURL(filePhoto.files[0]);
+    } else {
+      saveApplication(roll, feeData, '');
+    }
+  };
+  readerFee.readAsDataURL(fileFee.files[0]);
+
+  function saveApplication(rollAssigned, feeImageData, photoData){
+    const app = {
+      roll: rollAssigned,
+      name: q('stu_name').value.trim(),
+      surname: q('stu_surname').value.trim(),
+      gender: q('stu_gender').value,
+      dob: q('stu_dob').value,
+      cnic: cnic,
+      class: q('stu_class').value,
+      pastSchool: q('stu_pastSchool').value.trim(),
+      whatsapp: wa,
+      photo: photoData,
+      feeImage: feeImageData,
+      paymentStatus: "Pending",
+      appFee: q('app_fee').value || 0,
+      paymentSenderNumber: paymentSender,
+      fatherName: q('father_name').value.trim(),
+      fatherSurname: q('father_surname').value.trim(),
+      fatherCnic: fcnic,
+      fatherOccupation: q('father_occupation').value.trim()
+    };
+    const apps = readApps();
+    apps.push(app);
+    saveApps(apps);
+
+    // show confirmation box with photo and details
+    applyConfirm.classList.remove('hidden');
+    applyConfirm.innerHTML = `
+      <div class="confirm-box">
+        <img src="${photoData||feeImageData||''}" class="stu-photo" onerror="this.style.display='none'"/>
+        <div>
+          <div style="font-weight:800;color:#0f172a">Application Submitted</div>
+          <div style="margin-top:6px"><strong>Roll:</strong> ${app.roll}</div>
+          <div><strong>${app.name} ${app.surname}</strong> • ${app.gender}</div>
+          <div class="small">Class: ${app.class} • DOB: ${app.dob}</div>
+          <div class="small">Fee: ${app.appFee} • Payment: ${app.paymentStatus}</div>
+          <div class="small">Payment Sent From: <strong>${app.paymentSenderNumber}</strong></div>
+          <div class="small" style="margin-top:8px;color:green">Your form is successfully submitted! Awaiting payment verification.</div>
+          <div style="margin-top:8px;display:flex;gap:8px">
+            <button class="btn btn-primary" onclick="copyRoll('${app.roll}')">Copy Roll</button>
+            <button class="btn btn-ghost" onclick="openSection('slip'); q('slip_roll').value='${app.roll}'; genSlip()">View Slip</button>
+            <button class="btn" onclick="applyFormReset()">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+    applyForm.reset();
+    applyForm.classList.add('hidden');
+
+    // simulated notifications (console)
+    console.log('Application saved', app);
+    renderAppsList();
+    if(!q('adminArea').classList.contains('hidden')) loadAdminData();
+    showToast('Application submitted — awaiting admin verification');
+  }
+});
+
+/* ---------- Slip generation ---------- */
+q('genSlipBtn').addEventListener('click', genSlip);
+function genSlip(){
+  const roll = q('slip_roll').value.trim();
+  if(!roll){ alert('Enter roll number'); return; }
+  const apps = readApps();
+  const a = apps.find(x=>x.roll===roll);
+  if(!a){ q('slipArea').innerHTML = '<div class="small">Roll not found</div>'; return; }
+
+  // require approved payment
+  if(a.paymentStatus !== 'Approved'){
+    q('slipArea').innerHTML = `<div class="small" style="color:red">Payment not verified (Status: ${a.paymentStatus}). Contact admin.</div>`;
+    return;
+  }
+
+  q('slipArea').innerHTML = `<table class="table">
+    <tr><th colspan="2">Admit Slip</th></tr>
+    <tr><td style="width:120px" rowspan="8"><img src="${a.photo||''}" class="stu-photo" onerror="this.style.display='none'"/></td><td><strong>Name:</strong> ${a.name} ${a.surname}</td></tr>
+    <tr><td><strong>Gender:</strong> ${a.gender} • <strong>DOB:</strong> ${a.dob}</td></tr>
+    <tr><td><strong>Class:</strong> ${a.class}</td></tr>
+    <tr><td><strong>Roll No:</strong> ${a.roll}</td></tr>
+    <tr><td><strong>Fee:</strong> ${a.appFee} • <strong>Payment:</strong> ${a.paymentStatus}</td></tr>
+    <tr><td><strong>Payment Sent From:</strong> ${a.paymentSenderNumber || 'N/A'}</td></tr>
+    <tr><td><strong>WhatsApp:</strong> ${a.whatsapp || 'N/A'}</td></tr>
+    <tr><td><strong>Past School:</strong> ${a.pastSchool || 'N/A'}</td></tr>
+    <tr><th colspan="2">Father Information</th></tr>
+    <tr><td colspan="2"><strong>${a.fatherName} ${a.fatherSurname}</strong> • CNIC: ${a.fatherCnic} • ${a.fatherOccupation || 'Occupation N/A'}</td></tr>
+    </table>`;
+}
+
+/* print slip */
+q('printSlipBtn').addEventListener('click', ()=>{
+  if(!q('slipArea').innerHTML){ alert('No slip to print'); return; }
+  const win = window.open('','_blank');
+  win.document.write(`<html><head><title>Admit Slip</title></head><body>${q('slipArea').innerHTML}</body></html>`);
+  win.document.close(); win.focus(); win.print();
+});
+
+/* ---------- Result ---------- */
+q('checkResBtn').addEventListener('click', function(){
+  const roll = q('res_roll').value.trim();
+  if(!roll){ alert('Enter roll number'); return; }
+  const apps = readApps();
+  const a = apps.find(x=>x.roll===roll);
+  if(!a){ q('resultArea').innerHTML = '<div class="small">Roll not found</div>'; return; }
+  const marks = readMarks().filter(m=>m.rollNumber===roll).map(m=>m.marks);
+  q('resultArea').innerHTML = `<table class="table">
+    <tr><th colspan="2">Result</th></tr>
+    <tr><td style="width:120px" rowspan="6"><img src="${a.photo||''}" class="stu-photo" onerror="this.style.display='none'"/></td><td><strong>Name:</strong> ${a.name} ${a.surname}</td></tr>
+    <tr><td><strong>Class:</strong> ${a.class}</td></tr>
+    <tr><td><strong>Roll No:</strong> ${a.roll}</td></tr>
+    <tr><td><strong>Marks:</strong> ${marks.length?marks.join(', '):'Not uploaded'}</td></tr>
+    <tr><td><strong>Result Grade:</strong> ${marks.length?calculateGrade(avg(marks)): 'N/A'}</td></tr>
+    <tr><td><strong>WhatsApp:</strong> ${a.whatsapp || 'N/A'}</td></tr>
+    <tr><th colspan="2">Father Information</th></tr>
+    <tr><td colspan="2"><strong>${a.fatherName} ${a.fatherSurname}</strong> • CNIC: ${a.fatherCnic}</td></tr>
+    </table>`;
+});
+
+/* print result */
+q('printResultBtn').addEventListener('click', ()=>{
+  if(!q('resultArea').innerHTML){ alert('No result to print'); return; }
+  const win = window.open('','_blank');
+  win.document.write(`<html><head><title>Result</title></head><body>${q('resultArea').innerHTML}</body></html>`);
+  win.document.close(); win.focus(); win.print();
+});
+
+function avg(arr){ return (arr.reduce((s,n)=>s+Number(n),0)/arr.length).toFixed(2); }
+function calculateGrade(mark){
+  mark = Number(mark);
+  if(mark>=95) return 'A+';
+  if(mark>=85) return 'A';
+  if(mark>=75) return 'A-';
+  if(mark>=65) return 'B+';
+  if(mark>=60) return 'B';
+  if(mark>=55) return 'C';
+  if(mark>=50) return 'D';
+  return 'Fail';
+}
+
+/* ---------- Admin table (editable) ---------- */
+const adminLoginForm = q('adminLoginForm');
+const adminArea = q('adminArea');
+const adminTableBody = document.querySelector('#adminTable tbody');
+
+adminLoginForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const val = q('adminPass').value;
+  if(val === ADMIN_PASSWORD){
+    adminLoginForm.classList.add('hidden');
+    adminArea.classList.remove('hidden');
+    loadAdminData();
+  } else alert('Wrong Password');
+});
+
+function loadAdminData(){
+  const apps = readApps();
+  const marks = readMarks();
+  adminTableBody.innerHTML = '';
+  apps.forEach(a=>{
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${a.roll}</td>
+      <td><img src="${a.photo||''}" class="admin-img" onerror="this.style.display='none'"/></td>
+      <td contenteditable="true" data-field="name">${escapeHtml(a.name)}</td>
+      <td contenteditable="true" data-field="surname">${escapeHtml(a.surname)}</td>
+      <td contenteditable="true" data-field="gender">${escapeHtml(a.gender)}</td>
+      <td contenteditable="true" data-field="dob">${escapeHtml(a.dob)}</td>
+      <td contenteditable="true" data-field="cnic">${escapeHtml(a.cnic)}</td>
+      <td contenteditable="true" data-field="class">${escapeHtml(a.class)}</td>
+      <td contenteditable="true" data-field="pastSchool">${escapeHtml(a.pastSchool)}</td>
+      <td contenteditable="true" data-field="whatsapp">${escapeHtml(a.whatsapp)}</td>
+      <td contenteditable="true" data-field="fatherName">${escapeHtml(a.fatherName)}</td>
+      <td contenteditable="true" data-field="fatherSurname">${escapeHtml(a.fatherSurname)}</td>
+      <td contenteditable="true" data-field="fatherCnic">${escapeHtml(a.fatherCnic)}</td>
+      <td contenteditable="true" data-field="fatherOccupation">${escapeHtml(a.fatherOccupation)}</td>
+      <td>${a.appFee || ''}</td>
+      <td>${a.paymentSenderNumber || ''}</td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+          <img src="${a.feeImage||''}" style="width:70px;height:70px;border-radius:6px;object-fit:cover" onerror="this.style.display='none'"/>
+          <div> <strong>${a.paymentStatus}</strong> </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-primary btn-approve">Approve</button>
+            <button class="btn btn-ghost btn-reject">Reject</button>
+          </div>
+        </div>
+      </td>
+      <td contenteditable="true" data-field="marks">${marks.filter(m=>m.rollNumber===a.roll).map(m=>m.marks).join(', ')}</td>
+      <td><button class="btn btn-primary btn-save">Save</button> <button class="btn btn-ghost btn-delete">Delete</button></td>
+    `;
+    adminTableBody.appendChild(tr);
+
+    // approve/reject
+    tr.querySelector('.btn-approve').addEventListener('click', ()=>{
+      setPaymentStatus(a.roll, 'Approved');
+    });
+    tr.querySelector('.btn-reject').addEventListener('click', ()=>{
+      setPaymentStatus(a.roll, 'Rejected');
+    });
+
+    // delete
+    tr.querySelector('.btn-delete').addEventListener('click', ()=>{
+      if(!confirm('Delete this application?')) return;
+      let appsAll = readApps();
+      appsAll = appsAll.filter(x=>x.roll!==a.roll);
+      saveApps(appsAll);
+      let marksAll = readMarks();
+      marksAll = marksAll.filter(m=>m.rollNumber!==a.roll);
+      saveMarks(marksAll);
+      loadAdminData();
+      renderAppsList();
+    });
+
+    // save button (explicit)
+    tr.querySelector('.btn-save').addEventListener('click', ()=> applyAdminEdits(tr, a.roll) );
+
+    // blur -> save
+    tr.querySelectorAll('td[contenteditable]').forEach(td=>{
+      td.addEventListener('blur', ()=> applyAdminEdits(tr, a.roll) );
+    });
+  });
+}
+
+/* set payment and notify student & father (simulated) */
+function setPaymentStatus(roll, status){
+  let appsAll = readApps();
+  const idx = appsAll.findIndex(x=>x.roll===roll);
+  if(idx === -1) return;
+  appsAll[idx].paymentStatus = status;
+
+  // if approved -> assign final approved status and notify
+  if(status === 'Approved'){
+    // ensure roll exists - already assigned at submission. Optionally you can reassign a final numeric roll here.
+    const student = appsAll[idx];
+    saveApps(appsAll);
+    loadAdminData();
+    renderAppsList();
+
+    // notify (simulated) — show on-screen message for both student and father
+    const msg = `${ACADEMY_NAME}\n\nDear ${student.name},\nYour entry test form has been approved.\nRoll No: ${student.roll}\nStudent: ${student.name} ${student.surname}\nFather: ${student.fatherName} ${student.fatherSurname}\nPayment From: ${student.paymentSenderNumber || 'N/A'}`;
+    // simulated SMS/WhatsApp alerts:
+    alert(`To Student (${student.whatsapp || 'no number'}):\n\n${msg}`);
+    alert(`To Father (number saved in record):\n\n${msg}`);
+    showToast('Payment approved — notifications sent (simulated)');
+  } else {
+    saveApps(appsAll);
+    loadAdminData();
+    renderAppsList();
+    const student = appsAll[idx];
+    const msg = `${ACADEMY_NAME}\n\nDear ${student.name},\nYour payment has been rejected. Please contact the academy.`;
+    alert(msg);
+    showToast('Payment rejected — student notified (simulated)');
+  }
+}
+
+/* apply admin edits from a table row into localStorage */
+function applyAdminEdits(tr, roll){
+  const appsAll = readApps();
+  const idx = appsAll.findIndex(x=>x.roll===roll);
+  if(idx === -1) { alert('Application not found'); return; }
+
+  const cells = tr.querySelectorAll('td[contenteditable]');
+  const app = appsAll[idx];
+
+  cells.forEach(td=>{
+    const field = td.getAttribute('data-field');
+    const text = td.textContent.trim();
+    if(field === 'marks'){
+      const arr = text.split(',').map(s=>s.trim()).filter(s=>s!=='').map(Number).filter(n=>!isNaN(n));
+      let marksAll = readMarks();
+      marksAll = marksAll.filter(m=>m.rollNumber!==roll);
+      arr.forEach(v => marksAll.push({ rollNumber: roll, marks: Number(v) }));
+      saveMarks(marksAll);
+    } else {
+      app[field] = text;
+    }
+  });
+
+  appsAll[idx] = app;
+  saveApps(appsAll);
+  loadAdminData();
+  renderAppsList();
+}
+
+/* ---------- uk (password protected) ---------- */
+q('marksForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(q('marksPass').value !== ADMIN_PASSWORD){ alert('Wrong Password'); return; }
+  q('marksArea').classList.remove('hidden');
+  q('marksForm').classList.add('hidden');
+});
+
+q('saveMarksBtn').addEventListener('click', function(){
+  const roll = q('marks_roll').value.trim();
+  const val = q('marks_value').value;
+  if(!roll || val==='') { alert('Enter roll and marks'); return; }
+  const apps = readApps();
+  if(!apps.find(x=>x.roll===roll)){ alert('Roll not found'); return; }
+  const marksAll = readMarks();
+  marksAll.push({ rollNumber: roll, marks: Number(val) });
+  saveMarks(marksAll);
+
+  // notify result upload to student & father (simulated)
+  const student = apps.find(x=>x.roll===roll);
+  if(student){
+    const msg = `${ACADEMY_NAME}\n\nDear ${student.name},\nYour test result has been uploaded.\nRoll No: ${student.roll}\nMarks: ${val}`;
+    alert(`To Student (${student.whatsapp || 'no number'}):\n\n${msg}`);
+    alert(`To Father:\n\n${msg}`);
+    showToast('Result uploaded — notifications sent (simulated)');
+  }
+
+  alert('Marks uploaded');
+  if(!q('adminArea').classList.contains('hidden')) loadAdminData();
+});
+
+/* ---------- Utilities ---------- */
+function escapeHtml(s){ return (s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+/* ---------- Init ---------- */
+renderAppsList();
+loadAdminData();
+
+</script>
+</body>
+</html>
