@@ -31,7 +31,7 @@ nav a{color:#f5f5f3;text-decoration:none;padding:6px 8px;border-radius:8px;curso
 .card{background:var(--card);padding:18px;border-radius:10px;box-shadow:var(--shadow)}
 h2{margin:0 0 10px 0;color:var(--accent)}
 label{display:block;font-weight:500;margin-bottom:6px;color:#334155}
-input,select,textarea,button{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(6,40,61,0.06);margin-bottom:10px;font-size:14px}
+input,select,textarea,button{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(6,40,61,0.06);margin-bottom:5px;font-size:12px}
 input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);border-color:rgba(79,70,229,0.2)}
 .btn-row{display:flex;gap:8px}
 .btn{cursor:pointer;border:none;padding:10px 12px;border-radius:8px;font-weight:700}
@@ -49,6 +49,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
 
 /* small ui tweaks */
 .admin-img { width:60px;height:60px;border-radius:6px;object-fit:cover;border:1px solid #ddd }
+
 
 /* toast */
 .toast {
@@ -126,8 +127,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
       <!-- using the uploaded image path as logo (local file) -->
       <img id="siteLogo" src="logo dua Academy kamoon shaheed.PNG" alt="Logo" onerror="this.style.display='none'">
       <div>
-        <h1>Dua Educational Academy</h1>
-        <div class="small" style="color:rgba(255,255,255,0.9)">Online Admission Portal</div>
+        <h1></h1>
+        <div class="small" style="color:rgba(255,255,255,0.9)"></div>
       </div>
     </div>
     <nav>
@@ -135,9 +136,9 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
       <a onclick="openSection('apply')">Apply</a>
       <a onclick="openSection('slip')">Slip</a>
       <a onclick="openSection('result')">Result</a>
-      <a onclick="openSection('admin')">Admin</a>
-      <a onclick="openSection('marksUpload')">Marks</a>
-      <button class="btn btn-primary" onclick="openSection('apply')" style="width:auto;">Apply Now</button>
+      <a onclick="openSection('admin')"></a>
+      <a onclick="openSection('marksUpload')"></a>
+      
     </nav>
   </header>
 
@@ -155,6 +156,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
         <button class="btn btn-primary" onclick="openSection('slip')" style="width:auto;">Slip</button>
         <button class="btn btn-primary" onclick="openSection('result')" style="width:auto;">Result</button>
         <button class="btn btn-primary" onclick="openSection('admin')" style="width:auto;">Admin</button>
+        <button class="btn btn-primary" onclick="openSection('marksUpload')" style="width:auto;">M portal</button>
       </div>
 
       <h3 style="text-align:center; margin-top:20px; color:var(--accent);">Feculaty Dua Academy </h3>
@@ -259,7 +261,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
 
           <!-- NEW: Fee & Payment Screenshot -->
           <h4 class="small" style="color:var(--accent)">Payment</h4>
-          <label> Application Fee (auto) <input id="app_fee" readonly /></label>
+          <label> Application Fee  <input id="app_fee" readonly /></label>
           <label> Upload Payment Screenshot (required) <input id="fee_screenshot" type="file" accept="image/*" required /></label>
 
           <!-- NEW: Payment Sent From Number -->
