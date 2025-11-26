@@ -117,6 +117,59 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
   .teacher-card img{ width:120px;height:120px; }
 }
 
+<style>
+.card {
+  width: 220px;
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  margin: 12px;
+  font-family: sans-serif;
+}
+
+.card-header {
+  background: #1ebe57;  /* G style green */
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-top: 12px;
+}
+
+.card .name {
+  font-weight: 800;
+  margin-top: 10px;
+  color: #333;
+}
+
+.card .btn {
+  display: block;
+  margin: 8px auto;
+  padding: 8px 16px;
+  width: 80%;
+  border-radius: 25px;
+  color: #fff !important;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.call-btn { background: #28a745; }
+.call-btn:hover { background: #218838; }
+
+.wa-btn { background: #25D366; }
+.wa-btn:hover { background: #1ebe57; }
+</style>
+
 </style>
 </head>
 <body>
@@ -166,21 +219,36 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
           <div style="font-weight:800;color:var(--accent);margin-top:6px">Director Noor Muhammad Musafir Soomro</div>
           <div class="small"></div>
         </div>
-        <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
-          <img src="Sir gada hussain.jpg" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
-          <div style="font-weight:800;color:var(--accent);margin-top:6px">Pattern Gada Hussain Soomro</div>
-          <div class="small">📞 0308-3442741</div>
-        </div>
-        <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
-          <img src="sir Ahmed.jpg" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
-          <div style="font-weight:800;color:var(--accent);margin-top:6px">Teacher Ahmed Ali Chachar</div>
-          <div class="small">📞 0300-2627384</div>
-        </div>
-      <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">
-          <img src="ubedulla khan.PNG" style="width:120px;height:120px;border-radius:50%" onerror="this.style.display='none'">
-          <div style="font-weight:800;color:var(--accent);margin-top:6px">Mr. Ubedullah khan </div>
-          <div class="small">Web Developnment </div>
-        </div>
+        <!-- Card 1 -->
+<div class="card">
+  <div class="card-header"></div>
+  <img src="Sir gada hussain.jpg" onerror="this.style.display='none'">
+  <div class="name">Pattern Gada Hussain Soomro</div>
+
+  <a href="tel:03083442741" class="btn call-btn">📞 Call</a>
+  <a href="https://wa.me/923083442741" class="btn wa-btn">🟢 WhatsApp</a>
+</div>
+
+
+<!-- Card 2 -->
+<div class="card">
+  <div class="card-header"></div>
+  <img src="sir Ahmed.jpg" onerror="this.style.display='none'">
+  <div class="name">Teacher Ahmed Ali Chachar</div>
+
+  <a href="tel:03002627384" class="btn call-btn">📞 Call</a>
+  <a href="https://wa.me/923002627384" class="btn wa-btn">🟢 WhatsApp</a>
+</div>
+
+<!-- Card 2 -->
+<div class="card">
+  <div class="card-header"></div>
+  <img src="ubedulla khan.PNG" onerror="this.style.display='none'">
+  <div class="name">Mr. Ubedullah Khan <h5>web developnment</h5></div>
+
+  <a href="tel:03013402708" class="btn call-btn">📞 Call</a>
+  <a href="https://wa.me/923013402708" class="btn wa-btn">🟢 WhatsApp</a>
+</div>
 
         
         <div class="teacher-gallery" aria-hidden="false">
@@ -204,13 +272,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid rgba(79,70,229,0.12);b
           <img src="p9.jpg" alt="Miss Hajara" onerror="this.style.display='none'">
         
 
-          <div class="teacher-card" aria-hidden="false">
-            <div style="width:200px;text-align:center;background:#fff;border-radius:10px;padding:12px">          
-            <img src="ahmad card (4).PNG" alt="">
-             <img src="ahmad card (1).PNG" alt="">
-              <img src="ahmad card (2).PNG" alt="">
-               <img src="ahmad card (3).PNG" alt="">
-            </div>
+          
           
           
           ></div>
